@@ -7,6 +7,7 @@ import (
 	"github.com/irmine/goraklib/protocol"
 	"fmt"
 	"sync"
+	"strconv"
 )
 
 const (
@@ -82,9 +83,10 @@ func NewManager() *Manager {
 // Start starts the UDP server on the given address and port.
 // Start returns an error if any might have occurred during starting.
 // The manager will keep processing incoming packets until it has been Stop()ed.
-func (manager *Manager) Start(address string, port int) error {
+func (manager *Manager) Start(address string, stringport string) error {
 	manager.Running = true
-	err := manager.Server.Start(address, port)
+	port, err := strconv.Atoi(stringport)
+	manager.Server.Start(address, port)
 
 	go func() {
 		for manager.Running {
